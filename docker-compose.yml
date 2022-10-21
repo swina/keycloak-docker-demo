@@ -1,23 +1,60 @@
 version: '3'
-services:
-  keycloak:
-    image: keycloak/keycloak:17.0.0
-    environment: 
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=change_me
-    command:
-      - start-dev --hostname-admin-url=https://moodgiver.ga
-    ports:
-      - 8080:8080
-    networks: 
-      - keycloak-demo
-  nginx: 
-    build: 
-      context: ./nginx
-    ports: 
-      - 80:80
-    networks: 
-      - keycloak-demo
 
-networks: 
-  keycloak-demo: {}
+volumes:
+  mysql_data:
+      driver: local
+
+services:
+  mariadb:
+      image: mariadb
+      volumes:
+        - mysql_data:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: keycloak
+        MYSQL_USER: keycloak
+        MYSQL_PASSWORD: password
+      # Copy-pasted from https://github.com/docker-library/mariadb/issues/94
+      healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "--silent"]
+  keycloak:
+      image: keycloak/keycloak:18.0.0
+      environment:
+        DB_VENDOR: mariadb
+        DB_ADDR: mariadb
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_PASSWORD: password
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: Pa55w0rd
+        JGROUPS_DISCOVERY_PROTOCOL: JDBC_PING
+      ports: 
+        - 443:8443
+      depends_on:
+        - mariadb
+      command:
+        - start --hostname=moodgiver.ga
+
+# version: '3'
+# services:
+#   keycloak:
+#     image: keycloak/keycloak:17.0.0
+#     environment: 
+#       - KEYCLOAK_ADMIN=admin
+#       - KEYCLOAK_ADMIN_PASSWORD=change_me
+#     command:
+#       - start-dev --hostname-admin-url=https://moodgiver.ga
+#     ports:
+#       - 8080:8080
+#     networks: 
+#       - keycloak-demo
+#   nginx: 
+#     build: 
+#       context: ./nginx
+#     ports: 
+#       - 80:80
+#     networks: 
+#       - keycloak-demo
+
+# networks: 
+#   keycloak-demo: {}
