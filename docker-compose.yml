@@ -1,12 +1,16 @@
 version: '3'
 services:
   keycloak:
+<<<<<<< HEAD
     image: keycloak/keycloak:17.0.0
+=======
+    image: keycloak/keycloak:18.0.0
+>>>>>>> 0ca23b0f47295c31d17e20cb32a548a7be292ed4
     environment: 
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=change_me
     command:
-      - start-dev
+      - start-dev 
     ports:
       - 8080:8080
     networks: 
