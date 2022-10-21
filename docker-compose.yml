@@ -6,7 +6,7 @@ services:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=change_me
     command:
-      - start-dev --hostname-admin-url=https://moodgiver.ga
+      - start-dev 
     ports:
       - 8080:8080
     networks: 
