@@ -1,11 +1,10 @@
 version: '3'
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:19.0.3
+    image: keycloak/keycloak:17.0.0
     environment: 
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=change_me
-      - QUARKUS_HTTP_LIMITS_MAX_INITIAL_LINE_LENGTH=8192
     command:
       - start-dev
     ports:
