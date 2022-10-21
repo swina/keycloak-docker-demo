@@ -8,16 +8,16 @@ services:
     command:
       - start-dev --hostname-admin-url=https://moodgiver.ga
     ports:
-      - 443:8080
-#     networks: 
-#       - keycloak-demo
-#   nginx: 
-#     build: 
-#       context: ./nginx
-#     ports: 
-#       - 80:80
-#     networks: 
-#       - keycloak-demo
+      - 8080:8080
+    networks: 
+      - keycloak-demo
+  nginx: 
+    build: 
+      context: ./nginx
+    ports: 
+      - 80:80
+    networks: 
+      - keycloak-demo
 
-# networks: 
-#   keycloak-demo: {}
+networks: 
+  keycloak-demo: {}
